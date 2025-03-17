@@ -70,7 +70,7 @@ def process_board_items(items):
 # Função para enviar dados ao ChatGPT com prompt aprimorado
 def send_to_chatgpt(data):
     client = OpenAI(
-        api_key= os.getenv("OPENAI_API_KEY")
+        api_key=os.getenv("OPENAI_API_KEY")
     )
     
     # Converte os dados para uma string JSON formatada
@@ -103,13 +103,11 @@ def generate_pdf(content):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    # Utiliza multi_cell para permitir que o texto seja automaticamente quebrado em linhas
     pdf.multi_cell(0, 10, content)
     
-    # Salva o PDF em um objeto BytesIO para posterior download
-    pdf_buffer = io.BytesIO()
-    pdf.output(pdf_buffer)
-    pdf_buffer.seek(0)
+    # Gera o PDF como string e converte para bytes usando codificação 'latin1'
+    pdf_bytes = pdf.output(dest="S").encode("latin1")
+    pdf_buffer = io.BytesIO(pdf_bytes)
     return pdf_buffer
 
 # Interface Streamlit
