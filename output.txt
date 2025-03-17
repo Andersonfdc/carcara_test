@@ -1,0 +1,55 @@
+Para abordar a criação de casos de teste baseados no JSON fornecido, vamos usar o formato BDD (Behavior Driven Development), que é uma técnica que se concentra na linguagem comum usada para definir o comportamento do sistema. A partir da análise dos dados do JSON, identificaremos os possíveis caminhos, cenários de sucesso, falhas e ambiguidades.
+
+### Estrutura do JSON
+O JSON parece descrever um fluxo de interação com um usuário (possivelmente um bot de voz ou um sistema automatizado de resposta), onde mensagens são criadas e exibidas com base nas respostas do usuário. As principais ações podem incluir apresentar mensagens, coletar respostas e lidar com erros.
+
+### Casos de Teste
+
+#### Caso 1: Inicialização do Sistema
+**Dado** que o sistema é inicializado  
+**Quando** o usuário faz a primeira chamada  
+**Então** o sistema deve mostrar a saudação inicial: "Bom dia/ boa tarde/ boa noite! Bem-vindo ao mundo Toyota!"
+
+#### Caso 2: Acesso ao Menu de Vagas
+**Dado** que o usuário foi saudado  
+**Quando** o sistema pergunta se o usuário quer seguir os próximos passos  
+**Então** o usuário deve ser solicitado a digitar 1 para SIM ou 2 para NÃO.
+
+### Casos de Teste de Sucesso
+
+#### Caso 3: Usuário Aceita Prosseguir
+**Dado** que o usuário digitou 1  
+**Quando** o sistema recebe a entrada  
+**Então** deve mostrar a mensagem: "Você foi selecionado em uma de nossas vagas. Tem interesse de seguir os próximos passos?"
+
+#### Caso 4: Usuário Recusa Prosseguir
+**Dado** que o usuário digitou 2  
+**Quando** o sistema recebe a entrada  
+**Então** deve mostrar a mensagem: "Agradecemos o seu contato."
+
+### Casos de Teste de Falha
+
+#### Caso 5: Entrada Inválida no Menu
+**Dado** que o sistema perguntou se o usuário deseja prosseguir  
+**Quando** o usuário digita uma opção inválida (ex: 3)  
+**Então** o sistema deve exibir a mensagem: "Desculpe, não foi possível validar a opção escolhida."
+
+#### Caso 6: Excedendo tentativas inválidas
+**Dado** que o usuário digitou uma opção inválida  
+**Quando** o usuário tenta novamente e falha 3 vezes  
+**Então** o sistema deve exibir a mensagem: "Desculpe, não foi possível validar a opção escolhida."
+
+#### Caso 7: Timeout
+**Dado** que o usuário não responde  
+**Quando** o sistema aguarda por 5 segundos sem entrada  
+**Então** o sistema deve exibir a mensagem: "Ficou em Timeout?"
+
+### Casos de Teste de Não Entendimento
+
+#### Caso 8: Resposta Não Reconhecida
+**Dado** que o sistema está aguardando a resposta do usuário  
+**Quando** o usuário dá uma resposta não reconhecida (ou seja, não um número)  
+**Então** o sistema deve exibir a mensagem "Desculpe, não foi possível validar a opção escolhida."
+
+### Conclusões
+A partir da análise do JSON, diversos cenários e casos de teste foram identificados e descritos usando o formato BDD. Todos os caminhos de interação, incluindo sucesso, falha e situações ambíguas, foram explorados para assegurar que o sistema poderia lidar com cada situação de forma adequada. Este método garante que todas as partes do fluxo são testadas e que a experiência do usuário é levada em consideração em cada interação.
