@@ -4,6 +4,8 @@ import requests
 import json
 from openai import OpenAI
 from dotenv import load_dotenv
+from fpdf import FPDF
+import io
 
 load_dotenv()
 
@@ -96,11 +98,19 @@ def send_to_chatgpt(data):
         st.error(f"Erro ao comunicar com o ChatGPT: {e}")
         return ""
 
-# Função para salvar em um arquivo TXT
-def save_to_txt(content, filename='output.txt'):
-    with open(filename, 'w', encoding='utf-8') as file:
-        file.write(content)
-    st.success(f"Resultado salvo em '{filename}'")
+# Função para gerar um PDF com os casos de teste
+def generate_pdf(content):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    # Utiliza multi_cell para permitir que o texto seja automaticamente quebrado em linhas
+    pdf.multi_cell(0, 10, content)
+    
+    # Salva o PDF em um objeto BytesIO para posterior download
+    pdf_buffer = io.BytesIO()
+    pdf.output(pdf_buffer)
+    pdf_buffer.seek(0)
+    return pdf_buffer
 
 # Interface Streamlit
 st.title('CARCARA TEST')
@@ -121,10 +131,19 @@ if st.button('Executar'):
             
             if result:
                 st.success('Análise concluída!')
-                # Exibir resultado
+                # Exibir resultado em tela
                 st.text_area('Resultado:', result, height=300)
-                # Salvar em TXT
-                save_to_txt(result)
+                
+                # Gerar PDF com os casos de teste
+                pdf_file = generate_pdf(result)
+                
+                # Exibir botão para download do PDF
+                st.download_button(
+                    label="Baixar PDF com casos de teste",
+                    data=pdf_file,
+                    file_name="casos_de_teste.pdf",
+                    mime="application/pdf"
+                )
             else:
                 st.error('Não foi possível obter uma resposta do ChatGPT.')
         else:
